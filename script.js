@@ -29,6 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
         navMenu.classList.toggle('active');
         const expanded = hamburger.getAttribute('aria-expanded') === 'true';
         hamburger.setAttribute('aria-expanded', !expanded);
+        
+        // Toggle body scroll
+        if (navMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     };
 
     if (hamburger) {
@@ -367,11 +374,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const setActiveLink = () => {
         let current = '';
         const sections = document.querySelectorAll('section[id]');
+        const scrollPosition = window.pageYOffset + 100;
         
         for (const section of sections) {
-            const sectionTop = section.offsetTop - 100;
+            const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
-            if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
                 break;
             }
@@ -408,11 +416,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // === TOUCH SWIPE FOR MOBILE ===
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    videoLightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    videoLightbox.addEventListener('touchend', (e) => {
+        if (!videoLightbox.classList.contains('active')) return;
+        
+        touchEndX = e.changedTouches[0].screenX;
+        const threshold = 50; // Minimum swipe distance
+        
+        if (touchStartX - touchEndX > threshold) {
+            // Swipe left - next video
+            navigateLightbox('next');
+        } else if (touchEndX - touchStartX > threshold) {
+            // Swipe right - previous video
+            navigateLightbox('prev');
+        }
+    }, {passive: true});
+
+    // === RESPONSIVE UTILITIES ===
+    const checkViewport = () => {
+        // Add mobile-specific classes if needed
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('is-mobile');
+        } else {
+            document.body.classList.remove('is-mobile');
+        }
+    };
+
     // === INITIALIZATION ===
     const init = () => {
         setActiveLink();
         initializeTabs();
+        checkViewport();
+        
         window.addEventListener('scroll', setActiveLink);
+        window.addEventListener('resize', checkViewport);
     };
 
     // Start the application
