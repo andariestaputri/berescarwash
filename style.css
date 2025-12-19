@@ -15,14 +15,7 @@
 }
 
 /* ============================
-   FORCE LIGHT MODE - MINIMAL FIX
-   ============================ */
-html {
-    color-scheme: light !important;
-}
-
-/* ============================
-   BASE STYLES
+   BASE STYLES - MERGED HTML SELECTORS
    ============================ */
 * {
     margin: 0;
@@ -33,6 +26,7 @@ html {
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    color-scheme: light !important;
 }
 
 body {

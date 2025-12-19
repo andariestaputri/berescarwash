@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Function to handle tab switching
+    // Function to handle tab switching - REFACTORED FOR LOWER COGNITIVE COMPLEXITY
     const switchTab = (button) => {
         const targetId = button.dataset.target;
         if (!targetId) return;
@@ -137,61 +137,60 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetPane = document.querySelector(targetId);
         if (!targetPane) return;
 
-        // Determine tab type and get container
-        const isModalTab = button.classList.contains('modal-tab-button');
-        const isTestimonialTab = button.classList.contains('testimonial-tab-button');
-        const isLocationTab = button.classList.contains('tab-button');
+        // Get tab configuration based on button type
+        const tabConfig = getTabConfig(button);
+        if (!tabConfig) return;
 
-        // Get the tab group
-        let tabGroup;
-        if (isModalTab) {
-            tabGroup = button.closest('.modal-tabs');
-        } else if (isTestimonialTab) {
-            tabGroup = button.closest('.testimonial-tabs');
-        } else if (isLocationTab) {
-            tabGroup = button.closest('.location-tabs');
+        // Update tab buttons
+        updateActiveTabButton(tabConfig.tabGroup, button);
+        
+        // Update panes
+        updateActivePane(tabConfig.paneContainer, tabConfig.paneSelector, targetPane);
+    };
+
+    // Helper function to get tab configuration
+    const getTabConfig = (button) => {
+        if (button.classList.contains('modal-tab-button')) {
+            return {
+                tabGroup: button.closest('.modal-tabs'),
+                paneContainer: button.closest('.modal-content'),
+                paneSelector: '.modal-tab-pane'
+            };
+        } else if (button.classList.contains('testimonial-tab-button')) {
+            return {
+                tabGroup: button.closest('.testimonial-tabs'),
+                paneContainer: document.querySelector('.testimonial-content'),
+                paneSelector: '.testimonial-pane'
+            };
+        } else if (button.classList.contains('tab-button')) {
+            return {
+                tabGroup: button.closest('.location-tabs'),
+                paneContainer: document.querySelector('.location-content'),
+                paneSelector: '.location-pane'
+            };
         }
+        return null;
+    };
 
+    // Helper function to update active tab button
+    const updateActiveTabButton = (tabGroup, activeButton) => {
         if (tabGroup) {
-            // Remove active class from all buttons in the same group
             const allButtons = tabGroup.querySelectorAll('button');
             for (const btn of allButtons) {
                 btn.classList.remove('active');
             }
         }
+        activeButton.classList.add('active');
+    };
 
-        // Add active class to clicked button
-        button.classList.add('active');
-
-        // Get the container for panes
-        let container;
-        if (isModalTab) {
-            container = button.closest('.modal-content');
-        } else if (isTestimonialTab) {
-            container = document.querySelector('.testimonial-content');
-        } else if (isLocationTab) {
-            container = document.querySelector('.location-content');
-        }
-
+    // Helper function to update active pane
+    const updateActivePane = (container, paneSelector, targetPane) => {
         if (container) {
-            // Hide all panes in the container
-            let panesToHide;
-            if (isModalTab) {
-                panesToHide = container.querySelectorAll('.modal-tab-pane');
-            } else if (isTestimonialTab) {
-                panesToHide = container.querySelectorAll('.testimonial-pane');
-            } else if (isLocationTab) {
-                panesToHide = container.querySelectorAll('.location-pane');
-            }
-
-            if (panesToHide) {
-                for (const pane of panesToHide) {
-                    pane.classList.remove('active');
-                }
+            const panesToHide = container.querySelectorAll(paneSelector);
+            for (const pane of panesToHide) {
+                pane.classList.remove('active');
             }
         }
-
-        // Show target pane
         targetPane.classList.add('active');
     };
 
