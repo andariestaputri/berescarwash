@@ -1,4 +1,4 @@
-/* style.css - Beres! Car Wash */
+/* style.css - Beres! Car Wash - FINAL VERSION */
 /* ============================
    VARIABLES
    ============================ */
@@ -15,7 +15,7 @@
 }
 
 /* ============================
-   BASE STYLES - MERGED HTML SELECTORS
+   BASE STYLES
    ============================ */
 * {
     margin: 0;
@@ -451,11 +451,13 @@ section {
     outline-offset: -3px;
 }
 
+/* CARD SLIDESHOW HEIGHT */
 .card-slideshow {
     position: relative;
     width: 100%;
-    height: 180px;
+    height: 280px;
     overflow: hidden;
+    border-radius: 12px 12px 0 0;
 }
 
 .card-slideshow .slide {
@@ -787,7 +789,9 @@ footer {
     transform: translateY(-3px);
 }
 
-/* MODAL STYLES */
+/* ============================
+   MODAL STYLES - CLEAN VERSION
+   ============================ */
 .modal {
     position: fixed;
     inset: 0;
@@ -816,6 +820,15 @@ footer {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+/* MODAL MAIN CONTENT WRAPPER - GAP IMPROVED */
+.modal-main-content {
+    padding: 0 5px;
+    position: relative;
+    z-index: 2;
+    background: var(--white);
+    border-radius: 0 0 12px 12px;
+}
+
 .modal-close {
     position: absolute;
     top: 10px;
@@ -837,13 +850,28 @@ footer {
     background: #e0e0e0;
 }
 
+/* MODAL SLIDESHOW CONTAINER - NO SHADOW, BETTER GAP */
 .modal-slideshow-container {
     width: calc(100% + 50px);
-    margin: -25px -25px 20px -25px;
+    margin: -25px -25px 25px -25px; /* Reduced margin-bottom for better gap */
     overflow: hidden;
-    border-radius: 12px 12px 0 0;
+    border-radius: 12px;
     position: relative;
-    height: 220px;
+    height: 360px;
+    border-bottom: 1px solid rgba(0,0,0,0.05); /* Subtle separator */
+}
+
+/* CLEAN GRADIENT FOR SMOOTH TRANSITION */
+.modal-slideshow-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.8) 80%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .modal-slide {
@@ -875,6 +903,8 @@ footer {
     align-items: center;
     gap: 10px;
     justify-content: flex-start;
+    margin-top: 5px;
+    padding-top: 10px; /* Added padding for better spacing */
 }
 
 .modal-content h2 i {
@@ -892,7 +922,7 @@ footer {
 .modal-tabs {
     display: flex;
     gap: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     flex-wrap: wrap;
     overflow-x: auto;
     padding-bottom: 5px;
@@ -989,7 +1019,7 @@ footer {
 
 .price-list {
     list-style: none;
-    margin: 15px 0;
+    margin: 20px 0;
     border: 1px solid #eee;
     border-radius: 8px;
     overflow: hidden;
@@ -1050,7 +1080,7 @@ footer {
 /* TABLE STYLING */
 .table-container {
     overflow-x: auto;
-    margin: 15px 0;
+    margin: 20px 0;
     border: 1px solid #eee;
     border-radius: 8px;
     position: relative;
@@ -1229,7 +1259,9 @@ footer {
 .lightbox-nav.prev { left: 10px; }
 .lightbox-nav.next { right: 10px; }
 
-/* MEDIA QUERIES FOR RESPONSIVENESS */
+/* ============================
+   MEDIA QUERIES - CLEAN VERSION
+   ============================ */
 @media (max-width: 850px) {
     .hamburger {
         display: flex;
@@ -1300,7 +1332,7 @@ footer {
     }
     
     .card-slideshow {
-        height: 200px;
+        height: 250px;
     }
     
     .video-grid {
@@ -1330,10 +1362,15 @@ footer {
         max-height: 85vh;
     }
     
+    /* MODAL SLIDESHOW MOBILE */
     .modal-slideshow-container {
-        height: 180px;
+        height: 300px;
         width: calc(100% + 40px);
-        margin: -20px -20px 15px -20px;
+        margin: -20px -20px 20px -20px; /* Adjusted gap */
+    }
+    
+    .modal-slideshow-container::after {
+        height: 25px;
     }
     
     .comparison-table-wrapper {
@@ -1438,7 +1475,7 @@ footer {
     }
     
     .card-slideshow {
-        height: 180px;
+        height: 220px;
     }
     
     .card-content {
@@ -1491,14 +1528,20 @@ footer {
         padding: 15px;
     }
     
+    /* MODAL SLIDESHOW MOBILE SMALL */
     .modal-slideshow-container {
-        height: 150px;
+        height: 240px;
         width: calc(100% + 30px);
-        margin: -15px -15px 15px -15px;
+        margin: -15px -15px 15px -15px; /* Tighter gap for mobile */
+    }
+    
+    .modal-slideshow-container::after {
+        height: 20px;
     }
     
     .modal-content h2 {
         font-size: 1.4rem;
+        padding-top: 5px;
     }
     
     .modal-subtitle {
